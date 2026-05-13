@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  writer:
+    image: ubuntu
+    container_name: writer
+    volumes:
+      - shared-logs:/app/logs
+    command: >
+      bash -c "while true; do date >> /app/logs/output.log; sleep 30; done"
+
+  reader:
+    image: ubuntu
+    container_name: reader
+    volumes:
+      - shared-logs:/app/logs:ro
+    command: >
+      bash -c "tail -f /app/logs/output.log"
+
+volumes:
+  shared-logs:
